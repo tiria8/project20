@@ -1,10 +1,12 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics
+from rest_framework.filters import OrderingFilter
 
-from project_drf.models import Course, Lesson
-from project_drf.serializers import CourseSerializer, LessonSerializer
+from project_drf.models import Course, Lesson, Payments
+from project_drf.serializers import CourseSerializer, LessonSerializer, PaymentsSerializer
 
 
-class CourseViewSet(viewsets.ViewSet):
+class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
 
@@ -32,3 +34,10 @@ class LessonDestroyAPIView(generics.DestroyAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
 
+
+class PaymentsListAPIView(generics.ListAPIView):
+    serializer_class = PaymentsSerializer
+    queryset = Payments.objects.all()
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ('course', 'lesson', 'online_payment', 'cash_payment',)
+    ordering_fields = ('date',)
