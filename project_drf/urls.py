@@ -6,7 +6,7 @@ from rest_framework.routers import DefaultRouter
 from project_drf.views import CourseViewSet, LessonCreateAPIView, LessonListAPIView, LessonRetrieveAPIView, \
     LessonUpdateAPIView, LessonDestroyAPIView, PaymentsListAPIView
 
-app_name = ProjectDrfConfig
+app_name = ProjectDrfConfig.name
 
 router = DefaultRouter()
 router.register(r'course', CourseViewSet, basename='course')
