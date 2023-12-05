@@ -15,11 +15,13 @@ class CourseViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         permission_classes = [AllowAny]
         if self.action == 'create':
-            permission_classes = [IsAuthenticated]
-        elif self.action == 'list' or self.action == 'retrieve':
-            permission_classes = [IsAuthenticated]
+            permission_classes = [~ IsStaff]
+        elif self.action == 'list':
+            permission_classes = []
+        elif self.action == 'retrieve':
+            permission_classes = [IsOwner]
         elif self.action == 'update':
-            permission_classes = [IsAuthenticated, IsStaff | IsOwner]
+            permission_classes = [IsStaff | IsOwner]
         elif self.action == 'destroy':
             permission_classes = [IsOwner]
 
@@ -28,19 +30,18 @@ class CourseViewSet(viewsets.ModelViewSet):
 
 class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [~ IsStaff]
 
 
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
-    permission_classes = [IsAuthenticated]
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsOwner]
 
 
 class LessonUpdateAPIView(generics.UpdateAPIView):
@@ -52,7 +53,7 @@ class LessonUpdateAPIView(generics.UpdateAPIView):
 class LessonDestroyAPIView(generics.DestroyAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
-    permission_classes = [IsAuthenticated, IsOwner]
+    permission_classes = [IsOwner]
 
 
 class PaymentsListAPIView(generics.ListAPIView):
