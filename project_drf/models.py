@@ -45,3 +45,15 @@ class Payments(models.Model):
     total = models.PositiveIntegerField(verbose_name='сумма оплаты')
     online_payment = models.BooleanField(verbose_name='оплата переводом на счет', default=False, **NULLABLE)
     cash_payment = models.BooleanField(verbose_name='оплата наличными', default=False, **NULLABLE)
+
+
+class Subscription(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, **NULLABLE, verbose_name='курс')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, ** NULLABLE, verbose_name='пользователь')
+
+    def __str__(self):
+        return f'Курс: {self.course} - пользователь {self.user}'
+
+    class Meta:
+        verbose_name = 'подписка'
+        verbose_name_plural = 'подписки'
