@@ -74,8 +74,8 @@ class SubscriptionCreateAPIView(generics.CreateAPIView):
     def perform_create(self, serializer, **kwargs):
         subscription = serializer.save()
         subscription.user = self.request.user
-        course_id = self.kwargs.get('pk')
-        subscription.course = Course.objects.get(pk=course_id)
+        pk = self.kwargs.get('pk')
+        subscription.course = Course.objects.get(pk=pk)
         subscription.save()
 
 
