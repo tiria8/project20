@@ -32,32 +32,31 @@ class CourseViewSet(viewsets.ModelViewSet):
 
 class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [~ IsStaff]
 
 
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     pagination_class = ListPagination
-    permission_classes = [AllowAny]
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsOwner]
 
 
 class LessonUpdateAPIView(generics.UpdateAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsStaff | IsOwner]
 
 
 class LessonDestroyAPIView(generics.DestroyAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [IsOwner]
 
 
 class PaymentsListAPIView(generics.ListAPIView):
