@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'drf_yasg',
 
     'rest_framework',
     'rest_framework_simplejwt',
@@ -146,3 +147,4 @@ REST_FRAMEWORK = {
     ]
 }
 
+STRIPE_API_KEY = 'sk_test_51OLAa7JUngy0oKvCS1i9jG8LJbW8JcfBcwSjyhEXw59KBy60eQEfqej9ktwWWt9Ql5ezkFV8woXAEcSXV9KtRguj00zOzBF9V5'

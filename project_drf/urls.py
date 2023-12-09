@@ -4,7 +4,8 @@ from project_drf.apps import ProjectDrfConfig
 from rest_framework.routers import DefaultRouter
 
 from project_drf.views import CourseViewSet, LessonCreateAPIView, LessonListAPIView, LessonRetrieveAPIView, \
-    LessonUpdateAPIView, LessonDestroyAPIView, PaymentsListAPIView, SubscriptionCreateAPIView, SubscriptionDestroyAPIView
+    LessonUpdateAPIView, LessonDestroyAPIView, PaymentsListAPIView, SubscriptionCreateAPIView, \
+    SubscriptionDestroyAPIView, PaymentsCreateAPIView, GetPaymentView
 
 app_name = ProjectDrfConfig.name
 
@@ -21,4 +22,6 @@ urlpatterns = [
     path('payments/', PaymentsListAPIView.as_view(), name='payments-list'),
     path('course/<int:pk>/subscribe/', SubscriptionCreateAPIView.as_view(), name='subscription-create'),
     path('course/<int:pk>/unsubscribe/', SubscriptionDestroyAPIView.as_view(), name='subscription-delete'),
+    path('course/<int:pk>/payment/', PaymentsCreateAPIView.as_view(), name='payment-create'),
+    path('payments/<int:pk>/', GetPaymentView.as_view(), name='payment-get'),
 ]
