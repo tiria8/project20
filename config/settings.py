@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'drf_yasg',
+    'django_celery_beat',
 
     'rest_framework',
     'rest_framework_simplejwt',
@@ -148,3 +149,11 @@ REST_FRAMEWORK = {
 }
 
 STRIPE_API_KEY = 'sk_test_51OLAa7JUngy0oKvCS1i9jG8LJbW8JcfBcwSjyhEXw59KBy60eQEfqej9ktwWWt9Ql5ezkFV8woXAEcSXV9KtRguj00zOzBF9V5'
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_TIMEZONE = "Australia/Tasmania"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'

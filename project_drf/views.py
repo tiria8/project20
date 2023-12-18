@@ -1,7 +1,11 @@
+from datetime import datetime, timedelta
+
+import pytz
 import requests
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics
 from rest_framework.filters import OrderingFilter
+from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 
@@ -10,6 +14,7 @@ from project_drf.pagination import ListPagination
 from project_drf.permissions import IsOwner, IsStaff
 from project_drf.serializers import CourseSerializer, LessonSerializer, PaymentsSerializer, SubscriptionSerializer
 from project_drf.services import perform_payment, get_payment
+from project_drf.tasks import subscriber_notice
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -37,6 +42,12 @@ class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonSerializer
     permission_classes = [~ IsStaff]
 
+    def perform_create(self, serializer):
+        new_lesson = serializer.save()
+        new_lesson.owner = self.request.user
+        new_lesson.save()
+        subscriber_notice.delay(new_lesson.course)
+
 
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
@@ -54,6 +65,11 @@ class LessonUpdateAPIView(generics.UpdateAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsStaff | IsOwner]
+
+    def perform_update(self, serializer):
+        changed_lesson = serializer.save()
+        changed_lesson.save()
+        subscriber_notice.delay(changed_lesson.course)
 
 
 class LessonDestroyAPIView(generics.DestroyAPIView):
